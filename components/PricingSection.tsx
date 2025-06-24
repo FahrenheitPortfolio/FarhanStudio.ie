@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Mail, CheckCircle, ArrowRight } from 'lucide-react'
 
 export default function PricingSection() {
-  const [selectedServices, setSelectedServices] = useState([])
+  const [selectedServices, setSelectedServices] = useState<any[]>([])
   const [formData, setFormData] = useState({ name: '', email: '', description: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showQuote, setShowQuote] = useState(false)
@@ -38,7 +38,7 @@ export default function PricingSection() {
     })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     
