@@ -37,7 +37,7 @@ export default function Hero() {
         <motion.h1
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extralight text-gray-800 tracking-wider cursor-pointer">
+          className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extralight text-gray-800 tracking-wider cursor-pointer"
         >
           Farhan
         </motion.h1>
