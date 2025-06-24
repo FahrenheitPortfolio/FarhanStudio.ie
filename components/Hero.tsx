@@ -60,7 +60,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="max-w-4xl mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
+          className="max-w-4xl mx-auto mt-6 sm:mt-8 px-4 sm:px-6"
         >
           <p className="text-gray-600 font-light leading-relaxed text-xs sm:text-sm md:text-base mb-3 sm:mb-4">
             Creative technologist and award-winning designer with a passion for human-centered design. I've worked with global clients across Europe and Asia, blending storytelling, interaction, and clean code. From cinematic film production to full-stack development, I craft digital experiences that are both beautiful and intelligent.
