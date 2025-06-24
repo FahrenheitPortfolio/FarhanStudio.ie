@@ -1,0 +1,8 @@
+# Showreel Video Placeholder
+# Replace with your actual showreel video: showreel-demo.mp4
+# Recommended specifications:
+# - Format: MP4 (H.264)
+# - Resolution: 1920x1080 or higher
+# - Duration: 30-60 seconds for homepage background
+# - File size: Under 50MB for optimal loading
+# - Aspect ratio: 16:9

@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #000000;
+    --text-primary: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+  }
+  
+  .light {
+    --bg-primary: #ffffff;
+    --text-primary: #000000;
+    --glass-bg: rgba(0, 0, 0, 0.03);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    @apply overflow-x-hidden transition-colors duration-300;
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+  }
+  
+  /* Minimalist Glass Effects */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  .btn-primary {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+  }
+  
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 lg:py-24;
+  }
+  
+  .minimal-card {
+    @apply glass p-8 rounded-2xl transition-all duration-300;
+  }
+  
+  .minimal-card:hover {
+    @apply glass-strong;
+  }
+  
+  .text-subtle {
+    @apply text-white/70;
+  }
+  
+  .text-muted {
+    @apply text-white/50;
+  }
+  
+  .snap-section {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    .snap-section {
+      padding: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .snap-section {
+      padding: 0.5rem;
+    }
+  }
+}
