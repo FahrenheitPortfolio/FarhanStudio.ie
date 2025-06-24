@@ -24,7 +24,7 @@ export default function PricingSection() {
     { name: 'SEO Optimization', category: 'Digital', price: 2200 }
   ]
 
-  const toggleService = (service) => {
+  const toggleService = (service: any) => {
     setSelectedServices(prev => {
       const isSelected = prev.some(s => s.name === service.name)
       const newServices = isSelected 
