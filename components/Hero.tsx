@@ -51,7 +51,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-sm sm:text-base lg:text-lg text-gray-500 font-light mt-4 tracking-wide">
+          className="text-sm sm:text-base lg:text-lg text-gray-500 font-light mt-4 tracking-wide"
         >
           Digital Experience Architect
         </motion.p>

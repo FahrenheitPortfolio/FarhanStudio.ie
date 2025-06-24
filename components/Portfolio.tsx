@@ -8,7 +8,7 @@ import ImageOptimizer from './ImageOptimizer'
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('All')
 
-  const categories = ['All', 'Graphic Design', 'Web Dev', 'Film', 'App Dev', 'AI', 'Photography']
+  const categories = ['All', 'Graphic Design', 'Web Dev', 'Film', 'App Dev', 'Photography']
 
   const portfolioItems = [
     {

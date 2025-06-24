@@ -42,17 +42,38 @@ export default function PricingSection() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    const emailBody = `Hi Farhan,\n\nI'm interested in the following services:\n\n${selectedServices.map(s => `• ${s}`).join('\n')}\n\nProject Description:\n${formData.description}\n\nPlease send me a custom quote.\n\nBest regards,\n${formData.name}`
-    
-    const mailtoLink = `mailto:contact@farhanstudio.ie?subject=Custom Quote Request&body=${encodeURIComponent(emailBody)}`
-    window.location.href = mailtoLink
+    try {
+      const response = await fetch('/api/send-invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientName: formData.name,
+          clientEmail: formData.email,
+          projectDescription: formData.description,
+          selectedServices,
+          totalPrice
+        })
+      })
+      
+      const result = await response.json()
+      if (response.ok && result.success) {
+        alert(`Quote sent successfully to ${formData.email}! You'll receive it within a few minutes.`)
+        setFormData({ name: '', email: '', description: '' })
+        setSelectedServices([])
+        setTotalPrice(0)
+      } else {
+        alert('Failed to send quote. Please try again.')
+      }
+    } catch (error) {
+      alert('Error sending invoice. Please try again.')
+    }
     
     setIsSubmitting(false)
   }
 
   return (
-    <section className="h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 snap-section">
-      <div className="max-w-6xl mx-auto px-6 md:px-8 h-full flex flex-col justify-center py-12 md:py-16">
+    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 snap-section">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 min-h-screen flex flex-col justify-center py-8 md:py-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -67,7 +88,7 @@ export default function PricingSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 min-h-0">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -84,9 +105,9 @@ export default function PricingSection() {
                   key={service.name}
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => toggleService(service.name)}
+                  onClick={() => toggleService(service)}
                   className={`group p-4 rounded-xl border-2 transition-all duration-300 text-left relative overflow-hidden ${
-                    selectedServices.includes(service.name)
+                    selectedServices.some(s => s.name === service.name)
                       ? 'border-blue-400 bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 shadow-lg'
                       : 'border-gray-200 hover:border-blue-300 text-gray-700 hover:shadow-md bg-white'
                   }`}
@@ -97,16 +118,16 @@ export default function PricingSection() {
                       <p className="text-sm opacity-70 mt-1">{service.category}</p>
                     </div>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      selectedServices.includes(service.name)
+                      selectedServices.some(s => s.name === service.name)
                         ? 'border-blue-500 bg-blue-500'
                         : 'border-gray-300 group-hover:border-blue-400'
                     }`}>
-                      {selectedServices.includes(service.name) && (
+                      {selectedServices.some(s => s.name === service.name) && (
                         <CheckCircle size={14} className="text-white" />
                       )}
                     </div>
                   </div>
-                  {selectedServices.includes(service.name) && (
+                  {selectedServices.some(s => s.name === service.name) && (
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-xl"></div>
                   )}
                 </motion.button>
@@ -118,7 +139,7 @@ export default function PricingSection() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 md:p-10 shadow-xl border border-white/20 flex flex-col"
+            className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-xl border border-white/20 flex flex-col min-h-0"
           >
             <div className="flex items-center mb-6">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-3">
@@ -127,7 +148,7 @@ export default function PricingSection() {
               <h3 className="text-2xl font-light text-gray-800">Get Quote</h3>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5 flex-1">
+            <form onSubmit={handleSubmit} className="space-y-4 flex-1 overflow-y-auto">
               <div className="space-y-4">
                 <input
                   type="text"
@@ -159,8 +180,8 @@ export default function PricingSection() {
                   <p className="text-sm font-medium text-blue-800 mb-3">Selected Services ({selectedServices.length}):</p>
                   <div className="flex flex-wrap gap-2">
                     {selectedServices.map(service => (
-                      <span key={service} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                        {service}
+                      <span key={service.name} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                        {service.name}
                       </span>
                     ))}
                   </div>
@@ -174,32 +195,12 @@ export default function PricingSection() {
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-3 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
-                <span className="text-lg">{isSubmitting ? 'Opening Email...' : 'Request Quote'}</span>
+                <span className="text-lg">{isSubmitting ? 'Sending Quote...' : 'Email Me Quote'}</span>
                 <ArrowRight size={20} />
               </motion.button>
             </form>
 
-            <div className="mt-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-              <h4 className="font-semibold text-blue-800 mb-3 flex items-center">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                How it works:
-              </h4>
-              <div className="space-y-2">
-                {[
-                  'Select the services you need',
-                  'Fill out your project details', 
-                  "I'll email you a detailed quote within 24 hours",
-                  "We'll schedule a call to discuss your project"
-                ].map((step, index) => (
-                  <div key={index} className="flex items-center text-sm text-blue-700">
-                    <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">
-                      {index + 1}
-                    </div>
-                    <span>{step}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+
           </motion.div>
         </div>
       </div>
