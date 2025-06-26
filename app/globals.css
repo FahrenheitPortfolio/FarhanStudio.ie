@@ -88,17 +88,43 @@
   }
   
   .snap-section {
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
     max-width: 100%;
     position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
     margin: 0;
     padding: 0;
     border: none;
     outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    .snap-section {
+      min-height: auto;
+      padding: 2rem 0;
+    }
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Mobile responsive fixes */
+  @media (max-width: 768px) {
+    section {
+      min-height: auto !important;
+      height: auto !important;
+    }
+    
+    .h-screen {
+      min-height: 100vh;
+      height: auto;
+    }
   }
   
   @media (max-width: 768px) {

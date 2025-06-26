@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Play } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import ImageOptimizer from './ImageOptimizer'
 
 export default function Portfolio() {
@@ -110,10 +109,6 @@ export default function Portfolio() {
       image: '/portfolio/_0005_un-women.jpg',
       behanceUrl: 'https://www.youtube.com/watch?v=g6mU--eFNFE'
     }
-
-    
-    
-    // Add your projects here following the format above
   ]
 
   const filteredItems = activeCategory === 'All' 
@@ -121,15 +116,9 @@ export default function Portfolio() {
     : portfolioItems.filter(item => item.category === activeCategory)
 
   return (
-    <section className="h-screen bg-black relative snap-section">
-      <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-6 h-full flex flex-col py-6 md:py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-8"
-        >
+    <section className="min-h-screen bg-black relative py-8 md:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extralight text-white mb-3 md:mb-4 tracking-tight">
             My <span className="gradient-text">Portfolio</span>
           </h2>
@@ -139,10 +128,8 @@ export default function Portfolio() {
 
           <div className="flex flex-wrap justify-center gap-1 sm:gap-2 mb-4 md:mb-6 px-2" role="tablist" aria-label="Portfolio categories">
             {categories.map((category) => (
-              <motion.button
+              <button
                 key={category}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => setActiveCategory(category)}
                 className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeCategory === category
@@ -154,86 +141,54 @@ export default function Portfolio() {
                 aria-controls={`portfolio-${category.toLowerCase().replace(' ', '-')}`}
               >
                 {category}
-              </motion.button>
+              </button>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 flex-1 overflow-y-auto px-1 sm:px-0"
-          >
-            {filteredItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -4 }}
-                className="glass p-4 rounded-xl hover:glass-strong transition-all duration-300 group h-fit"
-              >
-                <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
-                  {item.image ? (
-                    <ImageOptimizer
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <div className="w-8 h-8 glass rounded-lg flex items-center justify-center mx-auto mb-2">
-                        <ExternalLink size={14} />
-                      </div>
-                      <p className="text-white/50 text-xs">Preview</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {filteredItems.map((item) => (
+            <div
+              key={item.id}
+              className="glass p-4 rounded-xl hover:glass-strong transition-all duration-300 group h-fit"
+            >
+              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
+                {item.image ? (
+                  <ImageOptimizer
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="w-8 h-8 glass rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <ExternalLink size={14} />
                     </div>
-                  )}
-                </div>
+                    <p className="text-white/50 text-xs">Preview</p>
+                  </div>
+                )}
+              </div>
+              
+              <div>
+                <h3 className="text-sm font-medium text-white mb-1">{item.title}</h3>
+                <p className="text-white/70 mb-2 text-xs leading-relaxed">{item.description}</p>
+                <p className="text-blue-400 text-xs font-medium mb-2">{item.client}</p>
                 
-                <div>
-                  <h3 className="text-sm font-medium text-white mb-1">{item.title}</h3>
-                  <p className="text-white/70 mb-2 text-xs leading-relaxed">{item.description}</p>
-                  <p className="text-blue-400 text-xs font-medium mb-2">{item.client}</p>
-                  
-                  {item.behanceUrl && (
-                    <motion.a
-                      href={item.behanceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      className="inline-flex items-center space-x-1 text-xs text-white/60 hover:text-white transition-colors"
-                    >
-                      <span>View on Behance</span>
-                      <ExternalLink size={10} />
-                    </motion.a>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Behance Profile Link */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mt-6"
-        >
-          <motion.a
-            href="https://www.behance.net/FarhanSaeedOfficial"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, y: -2 }}
-            className="inline-flex items-center space-x-2 glass px-6 py-3 rounded-full text-white/80 hover:text-white hover:glass-strong transition-all duration-300"
-          >
-            <span>View Full Portfolio on Behance</span>
-            <ExternalLink size={16} />
-          </motion.a>
-        </motion.div>
+                {item.behanceUrl && (
+                  <a
+                    href={item.behanceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1 text-xs text-white/60 hover:text-white transition-colors"
+                  >
+                    <span>View on Behance</span>
+                    <ExternalLink size={10} />
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

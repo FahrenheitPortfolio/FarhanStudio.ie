@@ -28,18 +28,18 @@ const PWAInstaller = dynamic(() => import('@/components/PWAInstaller'), { ssr: f
 export default function Home() {
   return (
     <ErrorBoundary>
-      <main className="min-h-screen overflow-hidden" role="main">
+      <main className="min-h-screen" role="main">
         <CursorTracker />
         <ParallaxBackground />
-        <ThemeToggle />
+
         <VoiceSearch />
         <PerformanceMonitor />
         <PWAInstaller />
         <Navigation />
 
         <section id="hero" aria-label="Hero section"><Hero /></section>
-        <section id="showreel" aria-label="Showreel section"><ShowreelSection /></section>
         <section id="services" aria-label="Services section"><Services /></section>
+        <section id="showreel" aria-label="Showreel section"><ShowreelSection /></section>
         <section id="process" aria-label="Process section"><ProcessSection /></section>
         <section id="portfolio" aria-label="Portfolio section"><Portfolio /></section>
         <section id="pricing" aria-label="Pricing section"><PricingSection /></section>

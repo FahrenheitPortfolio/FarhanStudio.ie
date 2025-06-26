@@ -1,150 +1,223 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Film, Briefcase, FolderOpen, Mail } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Github, Linkedin, Mail, Instagram } from 'lucide-react'
 
 export default function Hero() {
-  const navItems = [
-    { icon: Film, href: '#showreel', label: 'Showreel' },
-    { icon: Briefcase, href: '#services', label: 'Services' },
-    { icon: FolderOpen, href: '#portfolio', label: 'Portfolio' },
-    { icon: Mail, href: '#contact', label: 'Contact' },
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+  
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com/FahrenheitPortfolio', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/farhan-saeed', label: 'LinkedIn' },
+    { icon: Instagram, href: 'https://instagram.com/farhan.saeed', label: 'Instagram' },
+    { icon: Mail, href: 'mailto:contact@farhanstudio.ie', label: 'Email' },
   ]
 
-  const handleNavClick = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
-    <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative bg-gradient-to-b from-gray-50 to-white snap-section overflow-hidden">
-      {/* Subtle background elements for openness */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-50 rounded-full opacity-30 blur-3xl animate-float" />
-        <div className="absolute bottom-40 right-20 w-80 h-80 bg-purple-50 rounded-full opacity-20 blur-3xl animate-float-delayed" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-50 rounded-full opacity-10 blur-3xl" />
+    <section id="hero" className="min-h-screen relative bg-black text-white snap-section overflow-hidden">
+      {/* Background with Particles */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
+      
+      {/* Animated Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Stars */}
+        {Array.from({ length: 50 }).map((_, i) => {
+          const delay = Math.random() * 3
+          const duration = 2 + Math.random() * 3
+          const size = 1 + Math.random() * 2
+          const left = Math.random() * 100
+          const top = Math.random() * 100
+          
+          return (
+            <div
+              key={i}
+              className="absolute animate-pulse"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                borderRadius: '50%',
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
+                transform: `translate(${(mousePosition.x - window.innerWidth / 2) * 0.01}px, ${(mousePosition.y - window.innerHeight / 2) * 0.01}px)`
+              }}
+            />
+          )
+        })}
+        
+        {/* Floating Orbs */}
+        {Array.from({ length: 8 }).map((_, i) => {
+          const size = 20 + Math.random() * 40
+          const left = Math.random() * 100
+          const top = Math.random() * 100
+          const opacity = 0.05 + Math.random() * 0.1
+          
+          return (
+            <div
+              key={`orb-${i}`}
+              className="absolute rounded-full blur-sm"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                background: `radial-gradient(circle, rgba(59, 130, 246, ${opacity}) 0%, transparent 70%)`,
+                transform: `translate(${(mousePosition.x - window.innerWidth / 2) * 0.02}px, ${(mousePosition.y - window.innerHeight / 2) * 0.02}px)`,
+                transition: 'transform 0.3s ease-out'
+              }}
+            />
+          )
+        })}
+        
+        {/* Moving Lines */}
+        {Array.from({ length: 3 }).map((_, i) => {
+          const width = 100 + Math.random() * 200
+          const left = Math.random() * 100
+          const top = 20 + Math.random() * 60
+          const rotation = Math.random() * 360
+          
+          return (
+            <div
+              key={`line-${i}`}
+              className="absolute opacity-10"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                width: `${width}px`,
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                transform: `rotate(${rotation}deg) translate(${(mousePosition.x - window.innerWidth / 2) * 0.005}px, ${(mousePosition.y - window.innerHeight / 2) * 0.005}px)`,
+                transition: 'transform 0.5s ease-out'
+              }}
+            />
+          )
+        })}
+      </div>
+      
+      {/* Top Navigation Bar */}
+      <nav className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center p-4 md:p-6">
+        <div className="text-xl md:text-2xl font-light tracking-wider">FARHAN</div>
+        <div className="hidden md:flex space-x-8 text-sm font-light">
+          <a href="#services" className="hover:text-gray-300 transition-colors">SERVICES</a>
+          <a href="#portfolio" className="hover:text-gray-300 transition-colors">PORTFOLIO</a>
+          <a href="#pricing" className="hover:text-gray-300 transition-colors">PRICING</a>
+          <a href="#contact" className="hover:text-gray-300 transition-colors">CONTACT</a>
+        </div>
+      </nav>
+
+      {/* Main Content - Mobile Responsive Layout */}
+      <div className="min-h-screen flex items-center px-4 md:px-8 lg:px-16 relative z-10 pt-20 md:pt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full max-w-7xl mx-auto">
+          
+          {/* Left Column - Main Content */}
+          <div className="lg:col-span-7 flex flex-col justify-center space-y-6 md:space-y-8 text-center lg:text-left">
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex items-center justify-center lg:justify-start space-x-4">
+                <div className="w-8 md:w-12 h-px bg-white"></div>
+                <span className="text-xs tracking-widest text-gray-400 uppercase">Digital Creator</span>
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extralight text-white leading-none">
+                FARHAN
+              </h1>
+              
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-gray-300 tracking-wide max-w-lg mx-auto lg:mx-0">
+                DIGITAL EXPERIENCE ARCHITECT
+              </h2>
+            </div>
+            
+            {/* Bio Text */}
+            <div className="max-w-xl mx-auto lg:mx-0 space-y-3 md:space-y-4">
+              <p className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-gray-300">
+                Creative technologist and award-winning designer with a passion for human-centered design.
+              </p>
+              <p className="text-xs sm:text-sm md:text-base font-light leading-relaxed text-gray-400">
+                I've worked with global clients across Europe and Asia, blending storytelling, interaction, and clean code. 
+                From cinematic film production to full-stack development, I craft digital experiences that are both beautiful and intelligent.
+              </p>
+            </div>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
+              <button 
+                onClick={() => document.querySelector('#portfolio')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-6 md:px-8 py-3 md:py-4 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-light tracking-wide text-xs md:text-sm uppercase"
+              >
+                View Work
+              </button>
+              <button 
+                onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-6 md:px-8 py-3 md:py-4 bg-white text-black hover:bg-gray-200 transition-all duration-300 font-light tracking-wide text-xs md:text-sm uppercase"
+              >
+                Get In Touch
+              </button>
+            </div>
+          </div>
+          
+          {/* Right Column - Stats/Info */}
+          <div className="lg:col-span-5 flex flex-col justify-center space-y-8 md:space-y-12 lg:pl-12 mt-8 lg:mt-0">
+            <div className="space-y-6 md:space-y-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 md:gap-6">
+                <div className="border-l-2 border-gray-600 pl-4 md:pl-6 text-center sm:text-left">
+                  <div className="text-2xl md:text-3xl lg:text-4xl font-extralight text-white mb-1 md:mb-2">50+</div>
+                  <div className="text-xs md:text-sm text-gray-400 uppercase tracking-wide">Projects Completed</div>
+                </div>
+                
+                <div className="border-l-2 border-gray-600 pl-4 md:pl-6 text-center sm:text-left">
+                  <div className="text-2xl md:text-3xl lg:text-4xl font-extralight text-white mb-1 md:mb-2">15+</div>
+                  <div className="text-xs md:text-sm text-gray-400 uppercase tracking-wide">Countries Worked</div>
+                </div>
+                
+                <div className="border-l-2 border-gray-600 pl-4 md:pl-6 text-center sm:text-left">
+                  <div className="text-2xl md:text-3xl lg:text-4xl font-extralight text-white mb-1 md:mb-2">8+</div>
+                  <div className="text-xs md:text-sm text-gray-400 uppercase tracking-wide">Years Experience</div>
+                </div>
+              </div>
+              
+              {/* Expertise Tags */}
+              <div className="space-y-3 md:space-y-4 text-center lg:text-left">
+                <div className="text-xs text-gray-500 uppercase tracking-widest">Expertise</div>
+                <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                  {['UI/UX Design', 'Full-Stack Dev', 'Film Production', 'Brand Strategy', 'AI Integration'].map((skill) => (
+                    <span key={skill} className="px-2 md:px-3 py-1 border border-gray-600 text-xs text-gray-300 font-light">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Logo */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="text-center mb-20 z-10"
-      >
-        <motion.h1
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extralight text-gray-800 tracking-wider cursor-pointer"
-        >
-          Farhan
-        </motion.h1>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: "100%" }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-4"
-        />
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-sm sm:text-base lg:text-lg text-gray-500 font-light mt-4 tracking-wide"
-        >
-          Digital Experience Architect
-        </motion.p>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="max-w-4xl mx-auto mt-6 sm:mt-8 px-4 sm:px-6"
-        >
-          <p className="text-gray-600 font-light leading-relaxed text-xs sm:text-sm md:text-base mb-3 sm:mb-4">
-            Creative technologist and award-winning designer with a passion for human-centered design. I've worked with global clients across Europe and Asia, blending storytelling, interaction, and clean code. From cinematic film production to full-stack development, I craft digital experiences that are both beautiful and intelligent.
-          </p>
-          <p className="text-gray-600 font-light leading-relaxed text-xs sm:text-sm md:text-base">
-            With firsthand exposure to diverse cultures, from corporate executives in Europe to nomadic communities in the mountains, I bring a unique, emotionally intelligent approach to every project I undertake.
-          </p>
-        </motion.div>
-      </motion.div>
-
-      {/* Navigation Icons */}
-      <motion.nav
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="flex flex-wrap justify-center space-x-4 sm:space-x-8 md:space-x-16 z-10 px-4"
-      >
-        {navItems.map((item, index) => (
-          <motion.button
-            key={item.href}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.7 + index * 0.1, duration: 0.6 }}
-            onClick={() => handleNavClick(item.href)}
-            className="group relative flex flex-col items-center space-y-3 p-4"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+      {/* Social Media Icons - Bottom Right */}
+      <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 flex flex-col space-y-3 md:space-y-4">
+        {socialLinks.map((social) => (
+          <a
+            key={social.label}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-8 h-8 md:w-10 md:h-10 border border-gray-600 flex items-center justify-center hover:border-white hover:bg-white hover:text-black transition-all duration-300"
+            aria-label={social.label}
           >
-            {/* Icon Container */}
-            <motion.div
-              className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center group-hover:shadow-xl transition-all duration-300"
-              whileHover={{ 
-                y: -8,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
-              }}
-            >
-              <item.icon 
-                size={24} 
-                className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300" 
-              />
-            </motion.div>
-
-            {/* Label */}
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              className="text-sm text-gray-500 font-light tracking-wide absolute -bottom-2"
-            >
-              {item.label}
-            </motion.span>
-
-            {/* Hover Effect */}
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              whileHover={{
-                background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          </motion.button>
+            <social.icon size={16} className="md:w-[18px] md:h-[18px]" />
+          </a>
         ))}
-      </motion.nav>
+      </div>
 
 
-      
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center"
-        >
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1 h-3 bg-gray-400 rounded-full mt-2"
-          />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }
